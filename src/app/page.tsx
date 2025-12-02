@@ -1,50 +1,28 @@
 import { PeriodSection } from "@/components/period-section";
 import { groupAppointmentsByPeriod } from "@/utils/appointments-utils";
-import { prisma } from "../../lib/prisma";
-
-const appointments = [
-  {
-    id: '1',
-    petName: 'Rex',
-    description: 'Consulta',
-    tutorName: 'João',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T10:00:00'),
-  },
-  {
-    id: '2',
-    petName: 'Mimi',
-    tutorName: 'Maria',
-    description: 'Banho',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T11:00:00'),
-  },
-  {
-    id: '3',
-    petName: 'Nina',
-    tutorName: 'Natalia',
-    description: 'Consulta',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T14:00:00'),
-  },
-  {
-    id: '4',
-    petName: 'Nina',
-    tutorName: 'Natalia',
-    description: 'Consulta',
-    phone: '1234567890',
-    scheduleAt: new Date('2025-08-17T19:00:00'),
-  },
-];
+import { prisma } from "@/lib/prisma";
+import { AppointmentForm } from "@/components/appointment-form/appointment-form";
+import { Button } from "@/components/ui/button";
+import { endOfDay, parseISO, startOfDay } from 'date-fns';
 
 
+export default async function Home({searchParams}: {searchParams: Promise<{date?: string}>}) {
 
-export default async function Home() {
+  const { date } = await searchParams;
+  const selectedDate = date ? parseISO(date) : new Date();
 
-  const appoint = await prisma.appointment.findMany()
-  console.log(appoint);
+  const appointments = await prisma.appointment.findMany({
+    where: {
+      scheduleAt: {
+        gte: startOfDay(selectedDate),
+        lte: endOfDay(selectedDate),
+      },
+    },
+    orderBy: {
+      scheduleAt: 'asc',
+    },
+  });
   
-
   const periods = groupAppointmentsByPeriod(appointments)
 
   return (
@@ -61,7 +39,12 @@ export default async function Home() {
           <PeriodSection period={period} key={index}/>
 
         ))}
+      </div>
 
+      <div className="fixed bottom-0 left-0 right-0 flex justify-center bg-[#23242C] py-[18px] px-6 md:botton-6 md:right-6 md:left-auto md:top-auto md:w-auto md:bg-transparent md:p-0">
+        <AppointmentForm>
+          <Button variant="brand">Novo agendamento</Button>
+        </AppointmentForm>
       </div>
     </div>
   );

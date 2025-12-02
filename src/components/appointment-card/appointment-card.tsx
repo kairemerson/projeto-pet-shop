@@ -1,5 +1,14 @@
+"use client"
+
 import { Appointment } from "@/types/appointments"
-import { cn } from "../../../lib/utils"
+import { cn } from "../../lib/utils"
+import { AppointmentForm } from "../appointment-form/appointment-form"
+import { Button } from "../ui/button"
+import { Loader2, Pen, Trash2 } from "lucide-react"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import { useState } from "react"
+import { deleteAppointment } from "@/app/actions"
+import { toast } from "sonner"
 
 type AppointmentCard = {
     appointment: Appointment
@@ -7,6 +16,21 @@ type AppointmentCard = {
 }
 
 export const AppointmentCard = ({appointment, isFirstInSection = false}: AppointmentCard) => {
+    const [isDeleting, setIsDeleting] = useState(false)
+ 
+    const handleDelete = async () =>  {
+        setIsDeleting(true)
+
+        const result = await deleteAppointment(appointment.id)
+
+        if(result?.error) {
+            toast.error(result.error)
+            return
+        }
+
+        toast.success("Agendamento removido com sucesso")
+        setIsDeleting(false)
+    }
     return (
         <div className={cn("grid grid-cols-2 md:grid-cols-[15%_35%_30%_20%] items-center py-3", !isFirstInSection && "border-t border-[#353339]")}>
             <div className="text-left pr-4 md:pr-0">
@@ -30,6 +54,38 @@ export const AppointmentCard = ({appointment, isFirstInSection = false}: Appoint
                 <span className="text-paragraph-small-size text-content-secondary">
                     {appointment.description}
                 </span>
+            </div>
+
+            <div className="text-right mt-2 md:mt-0 col-span-2 md:col-span-1 flex justify-end items-center gap-2">
+                <AppointmentForm appointment={appointment}>
+                    <Button variant="edit" size="icon">
+                        <Pen size={16}/>
+                    </Button>
+                </AppointmentForm>
+
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="remove" size="icon">
+                            <Trash2 size={16}/>
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Remover agendamento</AlertDialogTitle>
+                            <AlertDialogDescription>tem certeza que deseja remover este agendamento? esta ação não pode ser desfeita.</AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
+                                {isDeleting && (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                Confirmar remoção
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
         </div>
     )
