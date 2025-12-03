@@ -112,12 +112,15 @@ export const AppointmentForm = ({appointment, children}: AppointmentFormProps) =
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          {children && (
+          {/* {children && (
             <DialogTrigger asChild>
               {children}
             </DialogTrigger>
 
-          )}
+          )} */}
+          <DialogTrigger asChild>
+           <Button variant="brand">Novo agendamento</Button>    
+          </DialogTrigger>
 
             <DialogContent variant="appointment" overlayVariant="blurred" showCloseButton>
                 <DialogHeader>
