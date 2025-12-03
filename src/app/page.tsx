@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { AppointmentForm } from "@/components/appointment-form/appointment-form";
 import { Button } from "@/components/ui/button";
 import { endOfDay, parseISO, startOfDay } from 'date-fns';
+import { DatePicker } from "@/components/date-picker/date-picker";
 
 
 export default async function Home({searchParams}: {searchParams: Promise<{date?: string}>}) {
@@ -32,6 +33,14 @@ export default async function Home({searchParams}: {searchParams: Promise<{date?
           <h1 className="text-title-size text-content-primary mb-2">Sua agenda</h1>
           <p className="text-paragraph-medium-size text-content-secondary">Aqui você pode ver todos os clientes e serviços agendados para hoje.</p>
         </div>
+
+        <div className="hidden md:flex items-center gap-4">
+          <DatePicker/>
+        </div>
+      </div>
+
+      <div className="mt-3 mb-8 md:hidden">
+        <DatePicker/>
       </div>
 
       <div className="pb-24 md:pb-0">
