@@ -59,7 +59,7 @@ type AppointmentFormProps = {
   children?: React.ReactNode
 }
 
-export const AppointmentForm = ({appointment, children}: AppointmentFormProps) => {
+export const AppointmentForm = ({appointment, children}: AppointmentFormProps) => {  
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -118,7 +118,7 @@ export const AppointmentForm = ({appointment, children}: AppointmentFormProps) =
             </DialogTrigger>
 
           )}
-         
+        
 
             <DialogContent variant="appointment" overlayVariant="blurred" showCloseButton>
                 <DialogHeader>
