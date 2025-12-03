@@ -69,17 +69,17 @@ export const AppointmentCard = ({appointment, isFirstInSection = false}: Appoint
                             <Trash2 size={16}/>
                         </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className="m-1">
                         <AlertDialogHeader>
                             <AlertDialogTitle>Remover agendamento</AlertDialogTitle>
                             <AlertDialogDescription>tem certeza que deseja remover este agendamento? esta ação não pode ser desfeita.</AlertDialogDescription>
                         </AlertDialogHeader>
 
-                        <AlertDialogFooter>
+                        <AlertDialogFooter className="flex gap-4">
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
                             <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
                                 {isDeleting && (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 )}
                                 Confirmar remoção
                             </AlertDialogAction>
