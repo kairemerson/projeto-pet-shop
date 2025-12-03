@@ -112,15 +112,13 @@ export const AppointmentForm = ({appointment, children}: AppointmentFormProps) =
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          {/* {children && (
+          {children && (
             <DialogTrigger asChild>
               {children}
             </DialogTrigger>
 
-          )} */}
-          <DialogTrigger asChild>
-           <Button variant="brand">Novo agendamento</Button>    
-          </DialogTrigger>
+          )}
+         
 
             <DialogContent variant="appointment" overlayVariant="blurred" showCloseButton>
                 <DialogHeader>
@@ -209,7 +207,7 @@ export const AppointmentForm = ({appointment, children}: AppointmentFormProps) =
                                       {field.value ? (
                                         format(field.value, 'dd/MM/yyyy')
                                       ) : (
-                                        <span>Selecione uma data</span>
+                                        <span className="text-paragraph-medium-size">Selecione uma data</span>
                                       )}
                                     </div>
                                     <ChevronDownIcon className="opacity-50 h-4 w-4" />
